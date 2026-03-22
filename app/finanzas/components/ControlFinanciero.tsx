@@ -1,21 +1,47 @@
 "use client";
 import { useState } from "react";
 
+interface Movimiento {
+  tipo: string;
+  monto: number;
+  fecha: string;
+}
+
+interface Props {
+  movimientos: Movimiento[];
+  setMovimientos: (movimientos: Movimiento[]) => void;
+  saldo: number;
+  setSaldo: (saldo: number) => void;
+  tope: number;
+}
+
 export default function ControlFinanciero({
   movimientos,
   setMovimientos,
   saldo,
-  setSaldo
-}) {
+  setSaldo,
+  tope
+}: Props) {
 
-  const [monto, setMonto] = useState(0);
-  const [tipo, setTipo] = useState("ingreso");
+  const [monto, setMonto] = useState<number>(0);
+  const [tipo, setTipo] = useState<string>("ingreso");
+
+  const gastoTotal = movimientos
+    .filter(m => m.tipo === "gasto")
+    .reduce((acc, m) => acc + m.monto, 0);
+
+  const restante = tope - gastoTotal;
 
   const agregarMovimiento = () => {
 
     if (monto === 0) return;
 
-    const nuevo = {
+    if (tipo === "gasto" && monto > restante) {
+      alert("No puedes superar el presupuesto");
+      return;
+    }
+
+    const nuevo: Movimiento = {
       tipo,
       monto,
       fecha: new Date().toLocaleString()
@@ -38,6 +64,10 @@ export default function ControlFinanciero({
       <h2 className="text-lg font-semibold text-gray-800 border-b pb-2">
         Control Financiero
       </h2>
+
+      <p className="mt-2 text-gray-600">
+        Presupuesto restante: ${restante}
+      </p>
 
       <select
         value={tipo}

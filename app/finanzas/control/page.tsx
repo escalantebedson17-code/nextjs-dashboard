@@ -9,7 +9,8 @@ export default function Page() {
     movimientos,
     setMovimientos,
     saldo,
-    setSaldo
+    setSaldo,
+    tope
   } = useFinanzas();
 
   return (
@@ -18,6 +19,7 @@ export default function Page() {
       setMovimientos={setMovimientos}
       saldo={saldo}
       setSaldo={setSaldo}
+      tope={tope}
     />
   );
 }

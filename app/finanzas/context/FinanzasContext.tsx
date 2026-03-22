@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, ReactNode } from "react";
 
 type Movimiento = {
   tipo: string;
@@ -19,7 +19,7 @@ type FinanzasContextType = {
 
 const FinanzasContext = createContext<FinanzasContextType | null>(null);
 
-export function FinanzasProvider({ children }: any) {
+export function FinanzasProvider({ children }: { children: ReactNode }) {
 
   const [saldo, setSaldo] = useState(0);
   const [tope, setTope] = useState(0);
@@ -42,5 +42,12 @@ export function FinanzasProvider({ children }: any) {
 }
 
 export function useFinanzas() {
-  return useContext(FinanzasContext)!;
+
+  const context = useContext(FinanzasContext);
+
+  if (!context) {
+    throw new Error("useFinanzas debe usarse dentro de FinanzasProvider");
+  }
+
+  return context;
 }

@@ -9,19 +9,42 @@ export default function Bitacora() {
   return (
     <div className="bg-white p-6 rounded shadow">
 
-      <h2 className="text-lg font-semibold">
+      <h2 className="text-lg font-semibold text-gray-800 border-b pb-2">
         Bitácora de Movimientos
       </h2>
 
       <div className="mt-4">
 
-        {movimientos.map((m, i) => (
-          <div key={i} className="border-b p-2">
+        {movimientos.length === 0 ? (
+          <p className="text-gray-500">
+            No hay movimientos registrados
+          </p>
+        ) : (
+          movimientos.map((m, i) => (
+            <div
+              key={i}
+              className="flex justify-between border-b p-2"
+            >
 
-            {m.tipo} - ${m.monto} - {m.fecha}
+              <span
+                className={
+                  m.tipo === "ingreso"
+                    ? "text-green-600 font-semibold"
+                    : "text-red-600 font-semibold"
+                }
+              >
+                {m.tipo}
+              </span>
 
-          </div>
-        ))}
+              <span>${m.monto}</span>
+
+              <span className="text-gray-500">
+                {m.fecha}
+              </span>
+
+            </div>
+          ))
+        )}
 
       </div>
     </div>

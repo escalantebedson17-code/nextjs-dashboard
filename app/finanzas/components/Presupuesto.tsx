@@ -21,6 +21,7 @@ export default function Presupuesto({ tope, setTope, movimientos }: Props) {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md border">
+
       <h2 className="text-lg font-semibold text-gray-800 border-b pb-2">
         Tope Presupuestal
       </h2>
@@ -28,13 +29,36 @@ export default function Presupuesto({ tope, setTope, movimientos }: Props) {
       <input
         type="number"
         placeholder="Definir presupuesto"
+        value={tope}
         onChange={(e) => setTope(Number(e.target.value))}
         className="border border-gray-300 p-2 mt-4 w-full rounded"
       />
 
-      <p className="mt-4 text-gray-700">
-        Restante: <span className="font-bold">${restante}</span>
-      </p>
+      <div className="mt-4 space-y-2">
+
+        <p className="text-gray-700">
+          Presupuesto: <span className="font-bold">${tope}</span>
+        </p>
+
+        <p className="text-gray-700">
+          Gasto total: <span className="font-bold">${gastoTotal}</span>
+        </p>
+
+        <p className="text-gray-700">
+          Restante: 
+          <span className={`font-bold ${restante < 0 ? "text-red-600" : "text-green-600"}`}>
+            ${restante}
+          </span>
+        </p>
+
+        {restante < 0 && (
+          <p className="text-red-600 font-semibold">
+            ⚠ Has superado el presupuesto
+          </p>
+        )}
+
+      </div>
+
     </div>
   );
 }
